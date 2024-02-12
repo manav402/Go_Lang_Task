@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Results for user</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        table {
+            border: 1px solid black;
+            width: 550px;
+            margin: 10vh auto;
+            scale: 1.5;
+        }
+
+        thead {
+            background-color: #dedede;
+        }
+
+        tbody,
+        thead {
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        th {
+            border-bottom: 1px solid black;
+        }
+
+        thead tr th:not(.last),
+        tbody tr td:not(.last) {
+            padding: 3px 0px;
+            border-right: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <table cellspacing="0">
+        <thead>
+            <tr>
+                <th width="70px">Fname</th>
+                <th width="70px">Lname</th>
+                <th width="70px">DOB</th>
+                <th width="70px">Email</th>
+                <th width="70px" class="last">Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .}}
+            <tr>
+                <td>{{.Fname}}</td>
+                <td>{{.Lname.String}}</td>
+                <td>{{.Dob}}</td>
+                <td>{{.Email}}</td>
+                <td class="last">{{.Number}}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</body>
+
+</html>
