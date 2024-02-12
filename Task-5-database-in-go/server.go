@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
 	"manav402/server/DB"
 	handle "manav402/server/controller"
 )
@@ -25,7 +26,7 @@ func main() {
 	err = DB.ConnectDB()
 	defer DB.DB.Close()
 	if err != nil {
-		log.Panic(err)
+		log.Println(err)
 	}
 
 	log.Println("database connected")
@@ -34,7 +35,7 @@ func main() {
 	// connecting go application and binding with port defined above
 	err = http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 	if err != nil {
-		log.Panic(err)
+		log.Println(err)
 	}
 
 }

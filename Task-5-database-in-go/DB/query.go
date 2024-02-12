@@ -3,24 +3,26 @@ package DB
 import (
 	"database/sql"
 	"fmt"
-	"manav402/server/models"
+	"log"
+
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	
+	"manav402/server/models"
 )
 
-var (
-	UNAME    = "manav"
-	PASSWORD = "clash"
-	DBNAME   = "User"
-	HOST     = "localhost"
-)
+
 // exporting db variable to user around the module
 var DB *sql.DB
 var err error
 
 // connect db funtion to initialize DB variable and connect to postgres database
 func ConnectDB() error {
-
-	connStr := fmt.Sprintf("host = %s password = %s user = %s dbname = %s sslmode = disable", HOST, PASSWORD, UNAME, DBNAME)
+	m,err := godotenv.Read(".env")
+	if err != nil {
+		log.Println(err)
+	}
+	connStr := fmt.Sprintf("host = %s password = %s user = %s dbname = %s sslmode = disable", m["HOST"], m["PASSWORD"], m["UNAME"], m["DBNAME"])
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
 		return err
@@ -52,25 +54,25 @@ func GetAllUser() ([]models.Profile, error) {
 
 	query := `SELECT * FROM profile`
 
-	rows,err:=DB.Query(query)
+	rows, err := DB.Query(query)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 
 	// temparory data variable to store in array
 	var dummy models.Profile
 	var ansArr []models.Profile
 
-	for rows.Next(){
+	for rows.Next() {
 		// scan method to store data at given address
-		err := rows.Scan(&dummy.Id,&dummy.Fname,&dummy.Lname,&dummy.Dob,&dummy.Email,&dummy.Number)
-		if err != nil{
-			return nil,err
+		err := rows.Scan(&dummy.Id, &dummy.Fname, &dummy.Lname, &dummy.Dob, &dummy.Email, &dummy.Number)
+		if err != nil {
+			return nil, err
 		}
 		// trim the unnecessary info from date of birth
 		dummy.Dob = dummy.Dob[:10]
-		ansArr = append(ansArr,dummy)
+		ansArr = append(ansArr, dummy)
 	}
 
-	return ansArr,nil
+	return ansArr, nil
 }

@@ -4,23 +4,27 @@ import (
 	"database/sql"
 	"html/template"
 	"log"
+	"net/http"
+	
 	"manav402/server/DB"
 	"manav402/server/models"
-	"net/http"
 )
+
+func panicRecovery(res http.ResponseWriter, req *http.Request) {
+	if recover() != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		res.Header().Set("content-type", "text/json")
+		res.Write([]byte(`{code:500,message:"server error"}`))
+	}
+}
 
 // a handler function for route /register which store profile data in database
 // @params :- a response writer to write data back to client and req which give us header file from client
 func HandleRegsiter(res http.ResponseWriter, req *http.Request) {
+	
+	defer panicRecovery(res,req)
 	var err error
 	// in case some unusual happens the server will send error data
-	defer func() {
-		if recover() != nil {
-			res.WriteHeader(http.StatusInternalServerError)
-			res.Header().Set("content-type", "text/json")
-			res.Write([]byte(`{code:500,message:"server error"}`))
-		}
-	}()
 	
 	// calling parse form to decrypt the form data
 	err = req.ParseForm()
@@ -52,9 +56,9 @@ func HandleRegsiter(res http.ResponseWriter, req *http.Request) {
 // @params :- a response writer to write data back to client and req which give us header file from client
 func HandleALlResult(res http.ResponseWriter, req *http.Request) {
 	// creating array to store each data from database
+	defer panicRecovery(res,req)
 	dataArr := make([]models.Profile, 0)
 	var err error
-
 	// calling get all user method to retrive the all user datas
 	dataArr, err = DB.GetAllUser()
 	if err != nil {
