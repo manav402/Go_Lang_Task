@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        table {
+            border: 1px solid black;
+            width: 550px;
+            margin: 10vh auto;
+        }
+
+        thead {
+            background-color: #dedede;
+        }
+
+        tbody,
+        thead {
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        th{
+            border-bottom:1px solid black;
+        }
+        thead tr th:not(.last),
+        tbody tr td:not(.last) {
+            padding: 3px 0px;
+            border-right: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <table cellspacing="0">
+        <thead>
+            <tr>
+                <th width="70px">TCode</th>
+                <th width="170px">TName</th>
+                <th width="70px">DepCde</th>
+                <th width="70px">Salary</th>
+                <th width="70px">Age</th>
+                <th width="100px" class="last">JoinDate</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>15</td>
+                <td>Sameer Sharma</td>
+                <td>123</td>
+                <td>75000</td>
+                <td>39</td>
+                <td class="last">01-Apr-2007</td>
+            </tr>
+            <tr>
+                <td>21</td>
+                <td>Ragvinder K</td>
+                <td>101</td>
+                <td>86000</td>
+                <td>29</td>
+                <td class="last">11-Nov-2005</td>
+            </tr>
+            <tr>
+                <td>34</td>
+                <td>Rama Gupta</td>
+                <td>119</td>
+                <td>52500</td>
+                <td>43</td>
+                <td class="last">03-Mar-2010</td>
+            </tr>
+            <tr>
+                <td>46</td>
+                <td>C R Menon</td>
+                <td>103</td>
+                <td>67000</td>
+                <td>38</td>
+                <td class="last">12-Jul-2004</td>
+            </tr>
+            <tr>
+                <td>77</td>
+                <td>Mohan Kumar</td>
+                <td>103</td>
+                <td>63000</td>
+                <td>55</td>
+                <td class="last">25-Nov-2000</td>
+            </tr>
+            <tr>
+                <td>81</td>
+                <td>Rajesh Kumar</td>
+                <td>119</td>
+                <td>74500</td>
+                <td>48</td>
+                <td class="last">11-Dec-2008</td>
+            </tr>
+            <tr>
+                <td>89</td>
+                <td>Sanjeev P</td>
+                <td>101</td>
+                <td>92600</td>
+                <td>54</td>
+                <td class="last">12-Jan-2009</td>
+            </tr>
+            <tr>
+                <td>93</td>
+                <td>Pragya Jain</td>
+                <td>123</td>
+                <td>32000</td>
+                <td>29</td>
+                <td class="last">05-Aug-2006</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

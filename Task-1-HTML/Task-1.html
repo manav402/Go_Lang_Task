@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task-1</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        .form_div{
+            height: 80vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            flex-direction:column;
+        }
+        form{
+            margin-top:20px;
+            width:min(40%,400px);
+            display:flex;
+            flex-direction:column;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .form_input{
+            font-weight: 500;
+            border: 1px solid #d5d5d5;
+            border-radius: 3px;
+            padding:5px;
+            margin:5px 0px 10px 0px;
+        }
+        label{
+            cursor: pointer;
+        }
+        #submit_btn{
+            cursor: pointer;
+            background-color:#00c3df;
+            color:white;
+        }
+    </style>
+</head>
+<body>
+    <div class="form_div">
+    <h1>User Form</h1>
+    <form method="post" action="#">
+        <label for="fname">First Name</label>
+        <input type="text" class="form_input" id="fname" name="first_name" placeholder="Enter a First Name">
+        <label for="lname">Last Name</label>
+        <input type="text" class="form_input" id="lname"   name="last_name" placeholder="Enter a Last Name">
+        <label for="dob">Date of Birth</label>
+        <input type="text" class="form_input" id="dob" name="dob" placeholder="Enter a Date of Birth">
+        <label for="email">Email</label>
+        <input type="email" class="form_input" id="email" name="email" placeholder="Enter a Email" required>
+        <label for="number">Mobile Number</label>
+        <input type="number" class="form_input" id="number" minlength=10 min=0 max=9999999999 name="mo_number" placeholder="Enter a Mobile Number" required>
+        <input type="submit" class="form_input" id="submit_btn" value="submit">
+    </form>
+    </div>
+</body>
+</html>
