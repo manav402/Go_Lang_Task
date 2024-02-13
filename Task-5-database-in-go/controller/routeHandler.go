@@ -20,6 +20,7 @@ func ThrowErrorToClient(res http.ResponseWriter, req *http.Request, err error) {
 	res.WriteHeader(http.StatusInternalServerError)
 	res.Header().Set("content-type", "text/json")
 	res.Write([]byte(fmt.Sprintf("{code:500,message:server error :- %s}", err)))
+	http.Error(res,"err",http.StatusInternalServerError)
 }
 
 // a handler function for route /register which store profile data in database
@@ -34,7 +35,6 @@ func HandleRegsiter(res http.ResponseWriter, req *http.Request) {
 		ThrowErrorToClient(res, req, err)
 		return
 	}
-
 	// storing created data to user profile structure
 	var userData = models.Profile{
 		Fname:  req.FormValue("first_name"),
@@ -43,7 +43,7 @@ func HandleRegsiter(res http.ResponseWriter, req *http.Request) {
 		Email:  req.FormValue("email"),
 		Number: req.FormValue("mo_number"),
 	}
-
+	
 	// calling insert function to store data in database
 	err = DBhandler.Insert(userData)
 	if err != nil {
