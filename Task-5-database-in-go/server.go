@@ -28,7 +28,11 @@ func main() {
 
 	// calling connect db method to manipulate databases
 	db,err := DBhandler.ConnectDB()
-	defer db.Dbptr.Close()
+	defer func(){
+		if err := db.Dbptr.Close(); err != nil {
+			log.Println(err)
+		}
+	}()
 	if err != nil {
 		log.Println(err)
 	}
