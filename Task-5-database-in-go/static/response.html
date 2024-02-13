@@ -38,10 +38,21 @@
             padding: 3px 0px;
             border-right: 1px solid black;
         }
+
+        #alert {
+            color: blue;
+            display: block;
+            width: 30%;
+            margin: 20px auto;
+            font-size: 1.3rem;
+            /* padding-left: 10vh; */
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
+    {{if .IsRedirected}} <p id="alert">Your Form is Submitted</p> {{else}} {{end}}
     <table cellspacing="0">
         <thead>
             <tr>
@@ -53,7 +64,7 @@
             </tr>
         </thead>
         <tbody>
-            {{range .}}
+            {{range .Arr}}
             <tr>
                 <td>{{.Fname}}</td>
                 <td>{{.Lname.String}}</td>
