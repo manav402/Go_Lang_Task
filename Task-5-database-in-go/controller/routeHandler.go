@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"manav402/server/DB"
+	"manav402/server/DBhandler"
 	"manav402/server/models"
 )
 
@@ -22,7 +22,6 @@ func HandleRegsiter(res http.ResponseWriter, req *http.Request) {
 
 	var err error
 	// in case some unusual happens the server will send error data
-
 	// calling parse form to decrypt the form data
 	err = req.ParseForm()
 	if err != nil {
@@ -40,7 +39,7 @@ func HandleRegsiter(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// calling insert function to store data in database
-	err = DB.Insert(userData)
+	err = DBhandler.Insert(userData)
 	if err != nil {
 		ThrowErrorToClient(res,req,err)
 		return
@@ -57,7 +56,7 @@ func HandleALlResult(res http.ResponseWriter, req *http.Request) {
 	dataArr := make([]models.Profile, 0)
 	var err error
 	// calling get all user method to retrive the all user datas
-	dataArr, err = DB.GetAllUser()
+	dataArr, err = DBhandler.GetAllUser()
 	if err != nil {
 		ThrowErrorToClient(res,req,err)
 		return

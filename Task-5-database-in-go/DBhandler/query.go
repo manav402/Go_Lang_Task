@@ -1,41 +1,43 @@
-package DB
+package DBhandler
 
 import (
 	"database/sql"
 	"fmt"
-	"log"
-
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 
 	"manav402/server/models"
 )
 
-
 // exporting db variable to user around the module
-var DB *sql.DB
+type DB struct {
+	Dbptr *sql.DB
+}
+var db = DB{}
+// var DB *sql.DB
 var err error
 
 // connect db funtion to initialize DB variable and connect to postgres database
-func ConnectDB() error {
-	m,err := godotenv.Read(".env")
+func ConnectDB() (*DB,error) {
+	m, err := godotenv.Read(".env")
 	if err != nil {
-		log.Println(err)
+		return nil,err
 	}
 	connStr := fmt.Sprintf("host = %s password = %s user = %s dbname = %s sslmode = disable", m["HOST"], m["PASSWORD"], m["UNAME"], m["DBNAME"])
-	DB, err = sql.Open("postgres", connStr)
+	dbvar,err := sql.Open("postgres", connStr)
+	db.Dbptr = dbvar
 	if err != nil {
-		return err
+		return nil,err
 	}
 
-	return nil
+	return &DB{dbvar},nil
 }
 
 // insert function insert the given struct back to database
 // @params :- a struct populated with user profile
 func Insert(data models.Profile) error {
 	// using prepare statement for query
-	query, err := DB.Prepare(`INSERT INTO profile (fname,lname,dob,email,number) VALUES ($1,$2,$3,$4,$5)`)
+	query, err := db.Dbptr.Prepare(`INSERT INTO profile (fname,lname,dob,email,number) VALUES ($1,$2,$3,$4,$5)`)
 	defer query.Close()
 	if err != nil {
 		return err
@@ -54,7 +56,7 @@ func GetAllUser() ([]models.Profile, error) {
 
 	query := `SELECT * FROM profile`
 
-	rows, err := DB.Query(query)
+	rows, err := db.Dbptr.Query(query)
 	defer rows.Close()
 	if err != nil {
 		return nil, err

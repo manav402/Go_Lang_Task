@@ -4,31 +4,31 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
-	"github.com/joho/godotenv"
-	"manav402/server/DB"
 	handle "manav402/server/controller"
+	"net/http"
+	"manav402/server/DBhandler"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	var err error
-	m,err := godotenv.Read(".env")
+	m, err := godotenv.Read(".env")
 	if err != nil {
 		log.Println(err)
 	}
 	var port = m["PORT"]
-	
+
 	// a file handler of http.Handler type that will be used to serve static file to client on / route
 	fileHandler := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fileHandler)
-	
+
 	// different handler defined in controller file associated with each route
 	http.HandleFunc("/register", handle.HandleRegsiter)
 	http.HandleFunc("/allResult", handle.HandleALlResult)
-	
+
 	// calling connect db method to manipulate databases
-	err = DB.ConnectDB()
-	defer DB.DB.Close()
+	db,err := DBhandler.ConnectDB()
+	defer db.Dbptr.Close()
 	if err != nil {
 		log.Println(err)
 	}
