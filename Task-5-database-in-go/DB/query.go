@@ -7,7 +7,7 @@ import (
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	
+
 	"manav402/server/models"
 )
 
@@ -55,6 +55,7 @@ func GetAllUser() ([]models.Profile, error) {
 	query := `SELECT * FROM profile`
 
 	rows, err := DB.Query(query)
+	defer rows.Close()
 	if err != nil {
 		return nil, err
 	}

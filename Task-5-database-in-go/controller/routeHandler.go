@@ -2,34 +2,32 @@ package controller
 
 import (
 	"database/sql"
+	"fmt"
 	"html/template"
-	"log"
 	"net/http"
-	
+
 	"manav402/server/DB"
 	"manav402/server/models"
 )
 
-func panicRecovery(res http.ResponseWriter, req *http.Request) {
-	if recover() != nil {
-		res.WriteHeader(http.StatusInternalServerError)
-		res.Header().Set("content-type", "text/json")
-		res.Write([]byte(`{code:500,message:"server error"}`))
-	}
+func ThrowErrorToClient(res http.ResponseWriter, req *http.Request,err error) {
+	res.WriteHeader(http.StatusInternalServerError)
+	res.Header().Set("content-type", "text/json")
+	res.Write([]byte(fmt.Sprintf("{code:500,message:server error :- %s}",err)))
 }
 
 // a handler function for route /register which store profile data in database
 // @params :- a response writer to write data back to client and req which give us header file from client
 func HandleRegsiter(res http.ResponseWriter, req *http.Request) {
-	
-	defer panicRecovery(res,req)
+
 	var err error
 	// in case some unusual happens the server will send error data
-	
+
 	// calling parse form to decrypt the form data
 	err = req.ParseForm()
 	if err != nil {
-		log.Panic(err)
+		ThrowErrorToClient(res, req, err)
+		return
 	}
 
 	// storing created data to user profile structure
@@ -44,7 +42,7 @@ func HandleRegsiter(res http.ResponseWriter, req *http.Request) {
 	// calling insert function to store data in database
 	err = DB.Insert(userData)
 	if err != nil {
-		log.Panic(err)
+		ThrowErrorToClient(res,req,err)
 		return
 	}
 
@@ -56,19 +54,20 @@ func HandleRegsiter(res http.ResponseWriter, req *http.Request) {
 // @params :- a response writer to write data back to client and req which give us header file from client
 func HandleALlResult(res http.ResponseWriter, req *http.Request) {
 	// creating array to store each data from database
-	defer panicRecovery(res,req)
 	dataArr := make([]models.Profile, 0)
 	var err error
 	// calling get all user method to retrive the all user datas
 	dataArr, err = DB.GetAllUser()
 	if err != nil {
-		panic(err)
+		ThrowErrorToClient(res,req,err)
+		return
 	}
 
 	// parsign the template html file which identify the variable needed in place
 	temp, err := template.ParseFiles("./static/response.html")
 	if err != nil {
-		panic(err)
+		ThrowErrorToClient(res,req,err)
+		return
 	}
 
 	// filling the blanks with data from database
