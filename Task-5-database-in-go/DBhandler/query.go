@@ -16,7 +16,28 @@ type DB struct {
 var db = DB{}
 // var DB *sql.DB
 var err error
+var envMap = map[string]string{}
 
+// setter type function for env map
+// a read file function uses godotenv package to read env file and store the data on envMap
+func ReadEnvFile()error{
+	envMap,err = godotenv.Read(".env")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// getter function for env data
+// return data from envMap if map is not yet initialized first the read function is called and the value from map is returned
+// @params :- a string corrosponding of key in env map
+// @returns :- the value store in map from env file
+func GetEnvData(key string)string{
+	if envMap == nil {
+		ReadEnvFile()
+	}
+	return envMap[key]
+}
 // connect db funtion to initialize DB variable and connect to postgres database
 func ConnectDB() (*DB,error) {
 	m, err := godotenv.Read(".env")

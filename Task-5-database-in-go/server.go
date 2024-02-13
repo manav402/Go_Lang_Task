@@ -7,16 +7,17 @@ import (
 	handle "manav402/server/controller"
 	"net/http"
 	"manav402/server/DBhandler"
-	"github.com/joho/godotenv"
 )
 
 func main() {
 	var err error
-	m, err := godotenv.Read(".env")
+	// reading env file for single time which parse the env file data
+	err = DBhandler.ReadEnvFile()
 	if err != nil {
 		log.Println(err)
 	}
-	var port = m["PORT"]
+	// now using getenvdata function to parse the env data from env files
+	var port = DBhandler.GetEnvData("PORT")
 
 	// a file handler of http.Handler type that will be used to serve static file to client on / route
 	fileHandler := http.FileServer(http.Dir("./static"))
