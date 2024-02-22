@@ -25,6 +25,7 @@ type API struct {
 	StudentController
 }
 
+// initapi will initialize the controller methods
 func InitApi(mongoClient *mongo.Client)(*API,error){
 	if mongoClient == nil {
 		return nil , errors.New("mongo client shoudl not be nil")

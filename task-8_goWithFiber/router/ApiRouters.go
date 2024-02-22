@@ -6,7 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 )
-
+// will initialize db and also each methods for collection structs
 func InitRouter(ctx context.Context, app *fiber.App) error {
 	services, err := services.InitServices(ctx)
 	if err != nil {

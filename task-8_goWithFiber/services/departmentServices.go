@@ -22,11 +22,7 @@ type DepartmentService struct {
 	DepartmentController controller.DepartmentController
 }
 
-// func InitDepartmentService(mongoClient *mongo.Client) (DepartmentServer, error) {
-// 	apiController,err := controller.InitApi(mongoClient)
-// 	return &DepartmentService{apiController.DepartmentController},err
-// }
-
+// create deparment will create a department from body parsed
 func (subjctService *DepartmentService) CreateADepartment(ctx *fiber.Ctx) error {
 	var departmentData models.Department
 	err := ctx.BodyParser(&departmentData)
@@ -42,6 +38,8 @@ func (subjctService *DepartmentService) CreateADepartment(ctx *fiber.Ctx) error 
 
 	return nil
 }
+
+// get all department will fetch all department data from collections
 func (subjctService *DepartmentService) GetAllDepartment(ctx *fiber.Ctx) error {
 	var departmentData []models.Department
 	
@@ -54,6 +52,8 @@ func (subjctService *DepartmentService) GetAllDepartment(ctx *fiber.Ctx) error {
 	ctx.JSON(departmentData)
 	return nil
 }
+
+// get a department will fetch data from collection matching a document id
 func (subjctService *DepartmentService) GetADepartment(ctx *fiber.Ctx) error {
 	var departmentData models.Department
 	departmentId := ctx.Params("departmentid","1")
@@ -66,6 +66,8 @@ func (subjctService *DepartmentService) GetADepartment(ctx *fiber.Ctx) error {
 	ctx.JSON(departmentData)
 	return nil
 }
+
+// edit department will replace old documetn with new one if id found in collection
 func (subjctService *DepartmentService) EditDepartment(ctx *fiber.Ctx) error {
 	var departmentData models.Department
 	err := ctx.BodyParser(&departmentData)
@@ -78,11 +80,11 @@ func (subjctService *DepartmentService) EditDepartment(ctx *fiber.Ctx) error {
 	}
 
 	ctx.JSON(OutputFormat{fiber.StatusOK,"data edited succesfully",nil})
-	// ctx.JSON(departmentData)
 	return nil
 }
+
+// delete department can delete the department documentation if id found in collections
 func (subjctService *DepartmentService) DeleteDepartment(ctx *fiber.Ctx) error {
-	// var departmentData models.Department
 	departmentId := ctx.Params("departmentid","1")
 	err := subjctService.DepartmentController.DeleteDepartment(ctx.Context(),departmentId)
 	if err != nil{
@@ -90,6 +92,5 @@ func (subjctService *DepartmentService) DeleteDepartment(ctx *fiber.Ctx) error {
 	}
 
 	ctx.JSON(OutputFormat{fiber.StatusOK,"data deleted succesfully",nil})
-	// ctx.JSON(departmentData)
 	return nil
 }
