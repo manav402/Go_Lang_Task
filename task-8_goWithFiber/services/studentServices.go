@@ -54,7 +54,7 @@ func (subjctService *StudentService) GetAllStudent(ctx *fiber.Ctx) error {
 }
 func (subjctService *StudentService) GetAStudent(ctx *fiber.Ctx) error {
 	var Data models.Student
-var id = ctx.Params("studentid","1")
+var id = ctx.Params("studentid")
 	// err := ctx.BodyParser(&Data)
 	// if err != nil {
 	// 	return err

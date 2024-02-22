@@ -3,13 +3,30 @@ package controller
 import (
 	"context"
 	"errors"
+	"log"
 	"manav402/FiberMongo/models"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 func (subject *SubjectController) CreateAsubject(ctx context.Context, subjectData models.Subjects) error {
-	_, err := subject.MongoClient.Database("university").Collection("Subject").InsertOne(ctx, subjectData)
+	var output models.Department
+	response := subject.MongoClient.Database("university").Collection("Department").FindOne(ctx, bson.D{{Key: "departmentid", Value: subjectData.Departmentid}})
+
+	err := response.Decode(&output)
+	if err != nil {
+		return err
+	}
+	log.Println(output)
+	output.Subjects = append(output.Subjects, subjectData.Subjectid)
+	log.Println(output)
+
+	result := subject.MongoClient.Database("university").Collection("Department").FindOneAndReplace(ctx, bson.D{{Key: "departmentid", Value: output.DepartmentId}}, output)
+	if result.Err() != nil {
+		return result.Err()
+	}
+
+	_, err = subject.MongoClient.Database("university").Collection("Subject").InsertOne(ctx, subjectData)
 	if err != nil {
 		return err
 	}

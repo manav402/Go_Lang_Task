@@ -3,17 +3,29 @@ package controller
 import (
 	"context"
 	"errors"
+	"log"
 	"manav402/FiberMongo/models"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 func (student *StudentController) CreateAstudent(ctx context.Context, studentData models.Student) error {
-	_, err := student.MongoClient.Database("university").Collection("Student").InsertOne(ctx, studentData)
+	log.Println("got student data", studentData)
+	departmentIdResult := student.MongoClient.Database("university").Collection("Department").FindOne(ctx, bson.D{{Key: "name", Value: studentData.DepartmentName}})
+	var departmentId models.Department
+	err := departmentIdResult.Decode(&departmentId)
 	if err != nil {
 		return err
 	}
 
+	studentData.DepartmentId = departmentId.DepartmentId
+	log.Println("set department id to studentdat ",studentData)
+	_, err = student.MongoClient.Database("university").Collection("Student").InsertOne(ctx, studentData)
+	if err != nil {
+		log.Println("err",err)
+		return err
+	}
+	log.Println("data is insrted")
 	return nil
 }
 

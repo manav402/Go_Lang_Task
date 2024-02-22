@@ -58,7 +58,7 @@ func (subjctService *SubjectService) GetAllSubject(ctx *fiber.Ctx) error {
 }
 func (subjctService *SubjectService) GetASubject(ctx *fiber.Ctx) error {
 var Data models.Subjects
-var id = ctx.Params("subjectId","1")
+var id = ctx.Params("subjectid")
 	// err := ctx.BodyParser(&Data)
 	// if err != nil {
 	// 	return err
@@ -93,7 +93,7 @@ func (subjctService *SubjectService) DeleteSubject(ctx *fiber.Ctx) error {
 	// if err != nil {
 		// return err
 	// }
-	id := ctx.Params("subjectId","1")
+	id := ctx.Params("subjectid")
 	err := subjctService.SubjectController.DeleteSubject(ctx.Context(), id)
 	if err != nil {
 		return err
