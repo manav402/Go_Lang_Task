@@ -7,8 +7,10 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// get all controller manage http request and response for /getall route
 func (c *Controller) GetAll(ctx *fiber.Ctx) error {
 	var data []model.TrainModel
+	
 	data, err := c.Service.GetAll(ctx.Context())
 	if err != nil {
 		return err
@@ -27,10 +29,12 @@ func (c *Controller) GetAll(ctx *fiber.Ctx) error {
 	return err
 }
 
+// get next page has service for pagination on http request and response
 func (c *Controller) GetNextPage(ctx *fiber.Ctx) error {
 	var data []model.TrainModel
 	var page int
 	var err error
+
 	params := ctx.AllParams()
 	if v, ok := params["index"]; !ok {
 		page = 0
@@ -40,9 +44,11 @@ func (c *Controller) GetNextPage(ctx *fiber.Ctx) error {
 			return err
 		}
 	}
+
 	if page < 0 {
 		page = 0
 	}
+
 	data, err = c.Service.GetNextPage(ctx.Context(), page)
 	if err != nil {
 		return err
@@ -59,18 +65,20 @@ func (c *Controller) GetNextPage(ctx *fiber.Ctx) error {
 	})
 }
 
+// search function manage http requesr response for search url
 func (c *Controller) Search(ctx *fiber.Ctx) error {
 	var m map[string]interface{}
+
 	err := ctx.BodyParser(&m)
 	if err != nil {
 		return err
 	}
-	// ctx.JSON(query)
+
 	data, err := c.Service.Search(ctx.Context(), string(m["query"].(string)))
 	if err != nil {
 		return err
 	}
-	// log.Println(data)
+	
 	ctx.JSON(data)
 	return nil
 }
