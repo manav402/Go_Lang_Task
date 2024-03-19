@@ -31,26 +31,44 @@ func (s *Service) GetAll(ctx context.Context) ([]model.TrainModel, error) {
 	return data, nil
 }
 
-func (s *Service)GetNextPage(ctx context.Context,page int)([]model.TrainModel,error){
+func (s *Service) GetNextPage(ctx context.Context, page int) ([]model.TrainModel, error) {
 	var data []model.TrainModel
 	var dummy model.TrainModel
-	// TODO: insert the paginations
-	cur,err := s.trainCollection.Find(ctx,bson.D{},options.Find().SetSkip(int64((page)*10)).SetLimit(10))
+	cur, err := s.trainCollection.Find(ctx, bson.D{}, options.Find().SetSkip(int64((page)*10)).SetLimit(10))
 	if err != nil {
-		return data,err
+		return data, err
 	}
 
-	for cur.TryNext(ctx){
+	for cur.TryNext(ctx) {
 		err = cur.Decode(&dummy)
 		if err != nil {
-			return data,err
+			return data, err
 		}
 		data = append(data, dummy)
 	}
-	return data,nil
+	return data, nil
 }
 
-func (s *Service) Search(ctx context.Context,query string)([]model.TrainModel,error){
+func (s *Service) Search(ctx context.Context, query string) ([]model.TrainModel, error) {
 	var data []model.TrainModel
-	return data,nil
+	var dummy model.TrainModel
+	// log.Println(query)
+	cur, err := s.trainCollection.Find(ctx, bson.M{
+		"$or": []bson.M{
+			{"train_name": bson.M{"$regex": query, "$options": "i"}},
+			{"starts": bson.M{"$regex": query, "$options": "i"}},
+			{"ends": bson.M{"$regex": query, "$options": "i"}},
+		},
+	},options.Find().SetLimit(10))
+	if err != nil {
+		return data, err
+	}
+	for cur.TryNext(ctx) {
+		err = cur.Decode(&dummy)
+		if err != nil {
+			return data, err
+		}
+		data = append(data, dummy)
+	}
+	return data, nil
 }

@@ -59,12 +59,18 @@ func (c *Controller) GetNextPage(ctx *fiber.Ctx) error {
 	})
 }
 
-func (c *Controller) Search(ctx *fiber.Ctx)error{
-	var query = ctx.Body()
-	data,err := c.Service.Search(ctx.Context(),string(query))
+func (c *Controller) Search(ctx *fiber.Ctx) error {
+	var m map[string]interface{}
+	err := ctx.BodyParser(&m)
 	if err != nil {
 		return err
 	}
+	// ctx.JSON(query)
+	data, err := c.Service.Search(ctx.Context(), string(m["query"].(string)))
+	if err != nil {
+		return err
+	}
+	// log.Println(data)
 	ctx.JSON(data)
 	return nil
 }
