@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main {
+    width: 80%;
+    margin: 0% auto;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: green;
+}
+
+#heading {
+    text-align: center;
+}
+
+.secondDiv {
+    width: 100%;
+    height: 80%;
+    margin: 0px auto;
+    background-color: white;
+}
+
+.search {
+    margin: 10px;
+    width: 100%;
+}
+
+.search>input {
+    width: calc(100% - 80px);
+    margin: 10px;
+    padding: 5px 5px;
+}
+
+.pageno {
+    padding-left: 20px;
+    font-size: 1.2rem;
+}
+
+.table {
+    width: 100%;
+    margin: auto;
+    margin: 10px;
+    padding: 10px;
+}
+
+tr {
+    height: 50px;
+    padding: 5px 2px;
+}
+
+th {
+    color: white;
+    background-color: black;
+    text-align: center;
+    border: 1px;
+}
+
+td {
+    text-align: center;
+    border: 1px solid;
+}
+
+table {
+    border-collapse: collapse;
+    width: calc(100% - 50px);
+}
+
+.button {
+    width: 30%;
+    margin-left: 20px;
+    padding-bottom: 20px;
+}
+
+.button button {
+    border: none;
+    border: 1px solid black;
+    background-color: rgb(18, 109, 108);
+    padding: 2px;
+    color: white;
+}
+
+a{
+    text-decoration: none;
+    color:white
+}

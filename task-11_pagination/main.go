@@ -8,7 +8,7 @@ import (
 	"manav/pagination/csv"
 	"manav/pagination/database"
 	router "manav/pagination/routes"
-
+ 	"github.com/gofiber/template/html/v2"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -20,15 +20,18 @@ func main() {
 	flag.Parse()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-
-	var app = fiber.New()
+	var engine = html.New("./templates",".html")
+	var app = fiber.New(fiber.Config{
+		Views:       engine,
+	})
+	app.Static("/public","./public")
 
 	controller, err := controller.NewController(ctx)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	log.Println(parseCsv,fileName)
+	log.Println(parseCsv, fileName)
 	if parseCsv {
 		log.Println("parsing the csv file")
 		err = csv.ReadCSV(ctx, controller.Service, fileName)

@@ -57,7 +57,6 @@ func ConnectDB(ctx context.Context) (*mongo.Database, error) {
 		mongoURL = "mongodb://localhost:27017/"
 		log.Println("connecting to local mongodb")
 	}
-	log.Println(mongoURL)
 	mongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURL))
 	if mongoClient == nil {
 		return nil,errors.New("why mongoclient is nill")

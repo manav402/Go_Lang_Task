@@ -5,6 +5,7 @@ import (
 	model "manav/pagination/models"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func (s *Service) InsertOne(ctx context.Context, data model.TrainModel) error {
@@ -28,4 +29,28 @@ func (s *Service) GetAll(ctx context.Context) ([]model.TrainModel, error) {
 		data = append(data, dummy)
 	}
 	return data, nil
+}
+
+func (s *Service)GetNextPage(ctx context.Context,page int)([]model.TrainModel,error){
+	var data []model.TrainModel
+	var dummy model.TrainModel
+	// TODO: insert the paginations
+	cur,err := s.trainCollection.Find(ctx,bson.D{},options.Find().SetSkip(int64((page)*10)).SetLimit(10))
+	if err != nil {
+		return data,err
+	}
+
+	for cur.TryNext(ctx){
+		err = cur.Decode(&dummy)
+		if err != nil {
+			return data,err
+		}
+		data = append(data, dummy)
+	}
+	return data,nil
+}
+
+func (s *Service) Search(ctx context.Context,query string)([]model.TrainModel,error){
+	var data []model.TrainModel
+	return data,nil
 }
